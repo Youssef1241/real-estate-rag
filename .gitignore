@@ -2,3 +2,6 @@
 .directory
 docs
 *ipynb
+texts
+chroma_langchain_db
+*.pyc
