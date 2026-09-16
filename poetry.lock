@@ -730,7 +730,7 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
-markers = {main = "platform_system == \"Windows\" or os_name == \"nt\"", dev = "sys_platform == \"win32\""}
+markers = {main = "os_name == \"nt\" or platform_system == \"Windows\"", dev = "sys_platform == \"win32\""}
 
 [[package]]
 name = "comm"
@@ -808,40 +808,6 @@ cffi = {version = ">=2.0.0", markers = "platform_python_implementation != \"PyPy
 
 [package.extras]
 ssh = ["bcrypt (>=3.1.5)"]
-
-[[package]]
-name = "dashscope"
-version = "1.27.5"
-description = "dashscope client sdk library"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "dashscope-1.27.5-py3-none-any.whl", hash = "sha256:54581f45ec5ad930c9cc42ca572ce2d8e9d38262fe0d6157b1207462318543b3"},
-    {file = "dashscope-1.27.5.tar.gz", hash = "sha256:bf64e06eb60ffcac92d2840b7ecc72a00b81a395b23107b2727b971b8285375b"},
-]
-
-[package.dependencies]
-aiohttp = "*"
-certifi = "*"
-cryptography = "*"
-httpx = ">=0.27.0"
-httpx-sse = ">=0.4.0"
-requests = "*"
-rich = ">=13.0.0"
-typer = ">=0.9.0"
-typing_extensions = ">=4.0"
-websocket-client = "*"
-
-[package.extras]
-acli = ["PyYAML (>=6.0)", "prompt-toolkit (>=3.0)", "textual (>=0.50,<9)", "tomli (>=2.0) ; python_version < \"3.11\""]
-acli-all = ["PyYAML (>=6.0)", "anthropic (>=0.40,<2)", "numpy (>=1.20)", "openai (>=1.30,<4)", "opencv-python-headless (>=4.5)", "prompt-toolkit (>=3.0)", "sounddevice (>=0.4)", "textual (>=0.50,<9)", "tomli (>=2.0) ; python_version < \"3.11\""]
-acli-anthropic = ["anthropic (>=0.40,<2)"]
-acli-camera = ["opencv-python-headless (>=4.5)"]
-acli-openai = ["openai (>=1.30,<4)"]
-acli-voice = ["numpy (>=1.20)", "sounddevice (>=0.4)"]
-rl = ["PyYAML (>=6.0)", "fastapi (>=0.100)", "opentelemetry-sdk (>=1.20)", "pydantic (>=2.0)", "tenacity", "uvicorn (>=0.20)"]
-tokenizer = ["tiktoken"]
 
 [[package]]
 name = "debugpy"
@@ -2361,6 +2327,56 @@ traitlets = "*"
 test = ["flake8", "matplotlib", "nbdime", "nbval", "notebook", "pytest"]
 
 [[package]]
+name = "mcp"
+version = "2.2.0"
+description = "Model Context Protocol SDK"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "mcp-2.2.0-py3-none-any.whl", hash = "sha256:bde982589473a060ae145e3406e9a5333fe538c97229ba841f5a7f92be004f81"},
+    {file = "mcp-2.2.0.tar.gz", hash = "sha256:2dc37ecb1974becdcebdbf7561e7c15a07dbbf20ba21ba16c3593b3038b3afbd"},
+]
+
+[package.dependencies]
+anyio = {version = ">=4.10", markers = "python_version >= \"3.14\""}
+httpx2 = ">=2.5.0"
+jsonschema = ">=4.20.0"
+mcp-types = "2.2.0"
+opentelemetry-api = ">=1.28.0"
+pydantic = ">=2.12.0"
+pyjwt = {version = ">=2.10.1", extras = ["crypto"]}
+python-dotenv = {version = ">=1.0.0", optional = true, markers = "extra == \"cli\""}
+python-multipart = ">=0.0.9"
+pywin32 = {version = ">=311", markers = "sys_platform == \"win32\""}
+sse-starlette = ">=3.0.0"
+starlette = {version = ">=0.48.0", markers = "python_version >= \"3.14\""}
+typer = {version = ">=0.16.0", optional = true, markers = "extra == \"cli\""}
+typing-extensions = ">=4.13.0"
+typing-inspection = ">=0.4.1"
+uvicorn = {version = ">=0.31.1", markers = "sys_platform != \"emscripten\""}
+
+[package.extras]
+cli = ["python-dotenv (>=1.0.0)", "typer (>=0.16.0)"]
+rich = ["rich (>=13.9.4)"]
+
+[[package]]
+name = "mcp-types"
+version = "2.2.0"
+description = "Model Context Protocol wire types"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "mcp_types-2.2.0-py3-none-any.whl", hash = "sha256:ea476b73ee86709ab5abc9452385ed36cc05907e582355622e294595c9a04f13"},
+    {file = "mcp_types-2.2.0.tar.gz", hash = "sha256:d3ed53703ddd10d9c6399f29d322bb66f3f67ab41348ac8556ba23e07fedefad"},
+]
+
+[package.dependencies]
+pydantic = ">=2.12.0"
+typing-extensions = ">=4.13.0"
+
+[[package]]
 name = "mdurl"
 version = "0.1.2"
 description = "Markdown URL utilities"
@@ -3856,6 +3872,24 @@ files = [
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
+name = "pyjwt"
+version = "2.14.0"
+description = "JSON Web Token implementation in Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "pyjwt-2.14.0-py3-none-any.whl", hash = "sha256:ad0cef71c756a56e74863c2919cf0985f72decbcfcb550ee2f422e7c62b5eedc"},
+    {file = "pyjwt-2.14.0.tar.gz", hash = "sha256:77283c83fb56ecf566a886c757a714bc83668e38156de2cce8263302f42e0b86"},
+]
+
+[package.dependencies]
+cryptography = {version = ">=3.4.0", optional = true, markers = "extra == \"crypto\""}
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+
+[[package]]
 name = "pypika"
 version = "0.51.1"
 description = "A SQL query builder API for Python"
@@ -3908,6 +3942,50 @@ files = [
 
 [package.extras]
 cli = ["click (>=5.0)"]
+
+[[package]]
+name = "python-multipart"
+version = "0.0.32"
+description = "A streaming multipart parser for Python"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "python_multipart-0.0.32-py3-none-any.whl", hash = "sha256:ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23"},
+    {file = "python_multipart-0.0.32.tar.gz", hash = "sha256:be54b7f3fa167bb83e4fcd936b887b708f4e57fe75911c02aebf53efaf8d938e"},
+]
+
+[[package]]
+name = "pywin32"
+version = "312"
+description = "Python for Windows Extensions"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "sys_platform == \"win32\""
+files = [
+    {file = "pywin32-312-cp310-cp310-win32.whl", hash = "sha256:772235332b5d1024c696f11cea1ae4be7930f0a8b894bb43db14e3f435f1ff7e"},
+    {file = "pywin32-312-cp310-cp310-win_amd64.whl", hash = "sha256:5dbc35d2b5320dc07f25fa31269cfb767471002b17de5eb067d03da68c7cb2db"},
+    {file = "pywin32-312-cp310-cp310-win_arm64.whl", hash = "sha256:3020656e34f1cf7faeb7bccd2b84653a607c6ff0c55ada85e6487d61716deabd"},
+    {file = "pywin32-312-cp311-cp311-win32.whl", hash = "sha256:17948aeadbdb091f0ced6ef0841620794e68327b94ee415571c1203594b7215c"},
+    {file = "pywin32-312-cp311-cp311-win_amd64.whl", hash = "sha256:d11417d84412f859b722fad0841b3614459ed0047f7542d8362e77884f6b6e8a"},
+    {file = "pywin32-312-cp311-cp311-win_arm64.whl", hash = "sha256:b2200a054ca6d6625c4842fc56a4976a4b47f96b73dbe5538c3f813a80359f47"},
+    {file = "pywin32-312-cp312-cp312-win32.whl", hash = "sha256:dab4f65ac9c4e48400a2a0530c46c3c579cd5905ecd11b80692373915269208b"},
+    {file = "pywin32-312-cp312-cp312-win_amd64.whl", hash = "sha256:b457f6d628a47e8a7346ce22acb7e1a46a4a78b52e1d17e1af56871bd19a93bc"},
+    {file = "pywin32-312-cp312-cp312-win_arm64.whl", hash = "sha256:6017c58e12f6809fbb0555b75df144c2922a9ffd18e4b9b5afa863b6c1a9d950"},
+    {file = "pywin32-312-cp313-cp313-win32.whl", hash = "sha256:7a27df850933d16a8eabfbaeb73d52b273e2da667f80d70b01a89d1f6828d02c"},
+    {file = "pywin32-312-cp313-cp313-win_amd64.whl", hash = "sha256:c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9"},
+    {file = "pywin32-312-cp313-cp313-win_arm64.whl", hash = "sha256:59aba5d5940842075343a5ddc6b11f1cdf0d1567fe745290359dfbcc7c2eb831"},
+    {file = "pywin32-312-cp314-cp314-win32.whl", hash = "sha256:a77a90fbb6881238d2ca9c6fd797b25817f3768fe78d214a90137ff055a75f5b"},
+    {file = "pywin32-312-cp314-cp314-win_amd64.whl", hash = "sha256:a4dd3a848290ef724347b19f301045831d8e802fa4464f491b98b1e0a081432e"},
+    {file = "pywin32-312-cp314-cp314-win_arm64.whl", hash = "sha256:9fce94568364e0155e6dfb781ac5d95903be8baf28670632beab1b523f300daa"},
+    {file = "pywin32-312-cp315-cp315-win32.whl", hash = "sha256:5c1fbe4a937a73ae9297384a3da38518cbc694c68ad8a809b2e19acd350f03ed"},
+    {file = "pywin32-312-cp315-cp315-win_amd64.whl", hash = "sha256:c2f03a0f73f804a13c2735b99392b0cd426bb4f2c4d0178e5ac966a0f21618d5"},
+    {file = "pywin32-312-cp315-cp315-win_arm64.whl", hash = "sha256:a8597d28f267b39074aef51fa593530082b39cbe5a074226096857b1fed2dfb9"},
+    {file = "pywin32-312-cp39-cp39-win32.whl", hash = "sha256:d620900033cc7531e50727c3c8333091df5dd3ffe6d68cdca38c03f5821408d5"},
+    {file = "pywin32-312-cp39-cp39-win_amd64.whl", hash = "sha256:dc90147579a905b8635e1b0ec6514967dcb07e6e0d9c42f1477feef14cac23bb"},
+    {file = "pywin32-312-cp39-cp39-win_arm64.whl", hash = "sha256:02ebca0f0242b75292e218065004310d6a477407c09fa449bfe4f6022bc0c0fc"},
+]
 
 [[package]]
 name = "pyyaml"
@@ -4576,6 +4654,29 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
+name = "sse-starlette"
+version = "3.4.11"
+description = "SSE plugin for Starlette"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "sse_starlette-3.4.11-py3-none-any.whl", hash = "sha256:c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453"},
+    {file = "sse_starlette-3.4.11.tar.gz", hash = "sha256:1bae716c02f3e6f294be41ff333220692dae7c3cbab077c900f159676719dade"},
+]
+
+[package.dependencies]
+anyio = ">=4.7.0"
+starlette = ">=0.49.1"
+
+[package.extras]
+daphne = ["daphne (>=4.2.0)"]
+examples = ["fastapi (>=0.115.12)", "pydantic (>=2)", "uvicorn (>=0.34.0)"]
+examples-db = ["aiosqlite (>=0.21.0)", "sqlalchemy[asyncio] (>=2.0.41)"]
+granian = ["granian (>=2.3.1)"]
+uvicorn = ["uvicorn (>=0.34.0)"]
+
+[[package]]
 name = "stack-data"
 version = "0.6.3"
 description = "Extract data from python stack frames and tracebacks for informative displays"
@@ -4594,6 +4695,24 @@ pure-eval = "*"
 
 [package.extras]
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
+
+[[package]]
+name = "starlette"
+version = "1.6.0"
+description = "The little ASGI library that shines."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "starlette-1.6.0-py3-none-any.whl", hash = "sha256:a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c"},
+    {file = "starlette-1.6.0.tar.gz", hash = "sha256:d4e3ac5e546444960c710297a3c9fc3f7ebae1b7e963f3d36173b49da535be9b"},
+]
+
+[package.dependencies]
+anyio = ">=3.6.2,<5"
+
+[package.extras]
+full = ["httpx (>=0.27.0,<0.29.0)", "httpx2 (>=2.0.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.18)", "pyyaml"]
 
 [[package]]
 name = "tenacity"
@@ -5780,4 +5899,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4.0.0"
-content-hash = "26e4ee6aaf6c62ee0760b18decd3b63d2a5a5b1a60f0793213905f7494067379"
+content-hash = "f5d7a477c5066c72b9c75b4b5ba1c97a7de2cc47f6eada5d525acbb87cc31f0e"
