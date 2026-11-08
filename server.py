@@ -23,6 +23,6 @@ pl
             "source-file": result.metadata["source"],
         }
         for result in results
-    ]
+    ] 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http", host="localhost", port=8000)

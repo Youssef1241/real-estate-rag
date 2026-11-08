@@ -1,6 +1,7 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
-
+import re
+SEPARATOR_TOKEN = "<SEP>"
 def chunk_documents(texts: list[str], filenames: list[str], chunk_size: int, chunk_overlap: int) -> list[str]:
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     documents = [
@@ -11,3 +12,54 @@ def chunk_documents(texts: list[str], filenames: list[str], chunk_size: int, chu
     documents = [Document(page_content=doc[0], metadata={"source": doc[1]}) for doc in documents] 
     return documents
 
+def chunk_by_article(text: str, pattern: str, min_chars: int, max_chars: int, chunk_overlap: int) -> list:
+    chunks = []
+    split_documents = re.split(pattern, text, flags=re.MULTILINE)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=max_chars, chunk_overlap=chunk_overlap)
+    chunk_idx = 0
+    for article in split_documents:
+        if chunk_idx >= len(split_documents):
+            break
+        print(f"Processing {chunk_idx}")
+        if len(split_documents[chunk_idx]) > max_chars:
+            oversized = splitter.split_text(split_documents[chunk_idx])
+            if chunk_idx != 0:
+                header = oversized[0].partition("\n")[0]
+                oversized[1:] = [header + '\n' + chunk for chunk in oversized[1:]]
+            chunks += oversized
+            chunk_idx += 1
+        elif len(split_documents[chunk_idx]) < min_chars and chunk_idx < len(split_documents) - 1:
+            idx = chunk_idx + 1
+            for item in split_documents[chunk_idx + 1:]:
+                if len(split_documents[chunk_idx]) + len(SEPARATOR_TOKEN.join(split_documents[chunk_idx + 1: idx + 1])) < min_chars:
+                    idx += 1
+                else:
+                    chunks.append(split_documents[chunk_idx] + SEPARATOR_TOKEN + SEPARATOR_TOKEN.join(split_documents[chunk_idx + 1: idx + 1]))
+                    chunk_idx = idx + 1
+                    break
+        else:
+            chunks.append(split_documents[chunk_idx])
+            chunk_idx += 1
+    return chunks
+
+def chunk_merged_articles(chunks: list, min_chars: int, max_chars: int, chunk_overlap: int):
+    splitter = RecursiveCharacterTextSplitter(chunk_size=max_chars, chunk_overlap=chunk_overlap)
+    chunked_articles = []
+    for chunk in chunks:
+        articles = chunk.split(SEPARATOR_TOKEN)
+        if len(articles[-1]) > max_chars and len(articles) > 1:
+            heading = articles[-1].partition("\n")[0]
+            split_large_article = splitter.split_text(articles[-1])
+            split_large_article[0] = "\n\n".join(articles[:-1]) + "\n\n" + split_large_article[0]
+            split_large_article[1:] = [heading + '\n' + article_chunk for article_chunk in split_large_article[1:]]
+            if len(split_large_article[-1]) < min_chars:
+                split_large_article[-2] = split_large_article[-2] + '\n' + split_large_article[-1]
+                split_large_article = split_large_article[:-1]
+            chunked_articles += split_large_article
+        else:
+            joined_articles = "\n\n".join(articles)
+            chunked_articles.append(joined_articles)
+    return chunked_articles
+
+def prepend_headings(chunks, heading):
+    return [heading + '\n' + chunk for chunk in chunks]
