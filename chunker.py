@@ -1,6 +1,7 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 import re
+import json
 SEPARATOR_TOKEN = "<SEP>"
 def chunk_documents(texts: list[str], filenames: list[str], chunk_size: int, chunk_overlap: int) -> list[str]:
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
@@ -20,7 +21,6 @@ def chunk_by_article(text: str, pattern: str, min_chars: int, max_chars: int, ch
     for article in split_documents:
         if chunk_idx >= len(split_documents):
             break
-        print(f"Processing {chunk_idx}")
         if len(split_documents[chunk_idx]) > max_chars:
             oversized = splitter.split_text(split_documents[chunk_idx])
             if chunk_idx != 0:
@@ -63,3 +63,20 @@ def chunk_merged_articles(chunks: list, min_chars: int, max_chars: int, chunk_ov
 
 def prepend_headings(chunks, heading):
     return [heading + '\n' + chunk for chunk in chunks]
+
+def prepare_documents(texts, filenames, minimum_chunk_size=500, maximum_chunk_size=1000, chunk_overlap=150, outlier_chunk_size=100):
+    documents = []
+    table = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+    with open("patterns.json", 'r') as file:
+        patterns = json.load(file)
+    for i, name in enumerate(filenames):
+        chunked_articles = chunk_by_article(texts[i], patterns[name][0], minimum_chunk_size, maximum_chunk_size, chunk_overlap)
+        merged_chunks = chunk_merged_articles(chunked_articles, minimum_chunk_size, maximum_chunk_size, chunk_overlap)
+        chunks_with_headings = prepend_headings(merged_chunks, patterns[name][1])
+        chunk_documents = [Document(page_content=doc, metadata={"source": name}) for doc in chunks_with_headings] 
+        documents += chunk_documents
+    documents = [doc for doc in documents if len(doc.page_content) >= outlier_chunk_size]
+    documents = list({doc.page_content: doc for doc in documents}.values())
+    documents = [Document(page_content=doc.page_content.translate(table), metadata=doc.metadata)
+    for doc in documents]
+    return documents

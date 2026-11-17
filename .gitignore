@@ -1,7 +1,13 @@
 .env
 .directory
 docs
-*ipynb
-texts
+test.ipynb
 chroma_langchain_db
+chroma_vector_store
 *.pyc
+new_test_set.json
+frontend/.files
+mcp_client.py
+chat.py
+
+

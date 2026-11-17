@@ -1,10 +1,27 @@
-ANSWER_SYSTEM_PROMPT = """You are an expert legal consultant on Egyptian Real Estate law. You will be asked questions about egyptian real estate law and you must answer only using the context given.
-- You must return your answer in statement-source pairs 
-- You must return a list items where each item is a statement-source pair
-- Each item in the list should be in the form of a JSON object with the following keys: 
-    - statement: the statement of the answer
-    - source: the ID of the chunk which will be provided at the top of every chunk and marked "ID"
-- The statements should be easily joinable so that when they are all joined together, they are correct grammatically and logically
+VERIFIER_PROMPT = """أنت مدقق قانوني للقانون العقاري المصري. ستصلك جمل ومقاطع. حدّد هل كل جملة مدعومة بمقطعها.
+أرجع القائمة بنفس ترتيب المدخلات.
+لكل عنصر:
+- statement: انسخ الجملة الأصلية حرفياً كما وردت، دون ترجمة أو تعليق
+- verdict: true أو false فقط
+الجمل والمقاطع:\n{context}"""
+
+REWORD_SYSTEM_PROMPT = """
+مهمتك معالجة استعلام عن القانون العقاري للبحث في قاعدة متجهات.
+
+- إذا كان الاستعلام يطلب مادة أو قانونًا محددًا (يذكر رقم مادة و/أو رقم قانون)، فأرجعه كما هو حرفيًا دون أي تغيير أو إضافة.
+- غير ذلك: أرجع 4 إلى 8 كلمات مفتاحية عربية بمصطلحات قانونية فصحى مع مرادفاتها، في سطر واحد، مفصولة بـ «،».
+
+أرجع الناتج فقط دون شرح، ولا تجب عن السؤال ولا تطلب توضيحًا.
+
+أمثلة:
+الاستعلام: القانون 131 لسنة 1948 المادة 1114
+الناتج: القانون 131 لسنة 1948 المادة 1114
+
+الاستعلام: ماذا يقدم ذوو الشأن لطلب التصالح
+الناتج: طلب التصالح، ذوو الشأن، المستندات المطلوبة للتصالح، إجراءات التصالح، مخالفات البناء، التقدم بطلب التصالح، الجهة المختصة بالتصالح
 """
 
-ANSWER_USER_PROMPT = """Context: {context}\nAnswer the following question: {query}"""
+REWORD_USER_PROMPT = """
+الاستعلام: {query}
+الناتج:
+"""

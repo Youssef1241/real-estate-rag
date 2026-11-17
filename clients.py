@@ -19,5 +19,5 @@ def make_vector_store_client(embeddings: OpenAIEmbeddings) -> Chroma:
     return Chroma(
         collection_name=embeddings.model,
         embedding_function=embeddings,
-        persist_directory="./chroma_langchain_db",
+        persist_directory="./chroma_vector_store",
     )
